@@ -73,6 +73,26 @@ tasks {
         into(layout.buildDirectory.dir("generated-resources/META-INF"))
         rename { "pom.xml" }
     }
+    val sourcesJar by register<Jar>("sourcesJar") {
+        dependsOn("copyPomToResources")
+        archiveClassifier.set("sources")
+        from(sourceSets["main"].allSource)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    val javadocJar by register<Jar>("javadocJar") {
+        dependsOn("javadoc")
+        archiveClassifier.set("javadoc")
+        from(javadoc.map { it.destinationDir!! })
+    }
+    prepareSandbox {
+        dependsOn(sourcesJar, javadocJar)
+        from(sourcesJar) {
+            into("${project.name}/lib")
+        }
+        from(javadocJar) {
+            into("${project.name}/lib")
+        }
+    }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         dependsOn("copyPomToResources")
