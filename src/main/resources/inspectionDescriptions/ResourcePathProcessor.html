@@ -1,0 +1,42 @@
+<html lang="en">
+<body>
+<h2>Simplified Annotations</h2>
+<p>
+    This inspection evaluates string expressions marked with the <code>@ResourcePath</code> annotation
+    to check if resource files exist.
+</p>
+<h3>Supported String Resolution</h3>
+<ul>
+    <li>String literals</li>
+    <li>Binary concatenation (e.g., "a" + "b")</li>
+    <li>Constants and field initializers</li>
+    <li>Simple methods with direct String return values</li>
+    <li>Enum constants and their constructor parameters</li>
+</ul>
+<h3>Code Example</h3>
+<pre><code>    // Class Field
+    &#64;ResourcePath
+    private String configFile = "config/settings.xml";
+
+    // Class Field (with base)
+    &#64;ResourcePath(base = "images")
+    private String iconFile = "icon.png"; // images/icon.png
+
+    // Method Parameter (with base)
+    public void loadResource(&#64;ResourcePath(base = "templates") String fileName) {
+        // implementation
+    }
+
+    // Enum Constructor
+    public enum Status {
+        OK("logo.png"); // assets/logo.png
+
+        private final String iconPath;
+
+        Status(&#64;ResourcePath(base = "assets") String iconPath) {
+            this.iconPath = iconPath;
+        }
+    }
+</code></pre>
+</body>
+</html>
