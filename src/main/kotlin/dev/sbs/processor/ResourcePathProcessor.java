@@ -37,7 +37,7 @@ import java.util.Optional;
  * Supports an optional {@code base} parameter in the annotation to specify a base folder
  * under which the resource path is resolved.
  */
-public class ResourcePathProcessor extends LocalInspectionTool {
+class ResourcePathProcessor extends LocalInspectionTool {
 
     @OptionTag("HIGHLIGHT_TYPE_BASE")
     public ProblemHighlightType baseHighlightType = ProblemHighlightType.ERROR;
