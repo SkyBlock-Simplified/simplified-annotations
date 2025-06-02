@@ -19,9 +19,7 @@ repositories {
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
 dependencies {
     intellijPlatform {
-        val platformType = providers.gradleProperty("platformType")
-        val platformVersion = providers.gradleProperty("platformVersion")
-        create(platformType, platformVersion)
+        create("IC", "2023.2")
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
 
         // Add necessary plugin dependencies for compilation here, example:
@@ -48,7 +46,7 @@ publishing {
             from(components["java"])
 
             pom {
-                name.set(providers.gradleProperty("projectName").get())
+                name.set("Simplified Annotations")
                 description.set("This plugin evaluates string expressions marked with the @ResourcePath annotation to check if resource files exist.")
                 artifactId = project.name.lowercase()
                 version = project.version.toString()
