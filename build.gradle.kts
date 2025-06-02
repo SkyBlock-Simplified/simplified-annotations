@@ -1,10 +1,11 @@
 plugins {
     id("java")
+    id("maven-publish")
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
     id("org.jetbrains.intellij.platform") version "2.6.0"
 }
 
-group = "dev.sbs.annotations"
+group = "dev.sbs"
 version = "1.0.0"
 
 repositories {
@@ -41,6 +42,21 @@ intellijPlatform {
     buildSearchableOptions = false
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+
+            pom {
+                name.set(providers.gradleProperty("projectName").get())
+                description.set("This plugin evaluates string expressions marked with the @ResourcePath annotation to check if resource files exist.")
+                artifactId = project.name.lowercase()
+                version = project.version.toString()
+            }
+        }
+    }
+}
+
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
@@ -50,14 +66,22 @@ tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
     }
+    register<Copy>("copyPomToResources") {
+        dependsOn("generatePomFileForMavenJavaPublication")
+        val generatedPom = layout.buildDirectory.file("publications/mavenJava/pom-default.xml")
+        from(generatedPom)
+        into(layout.buildDirectory.dir("generated-resources/META-INF"))
+        rename { "pom.xml" }
+    }
     processResources {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        dependsOn("copyPomToResources")
     }
 }
 
 sourceSets {
     main {
         java.srcDirs("src/main/kotlin")
-        resources.srcDirs("src/main/resources")
+        resources.srcDirs("src/main/resources", layout.buildDirectory.dir("generated-resources"))
     }
 }
