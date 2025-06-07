@@ -79,11 +79,13 @@ class ResourcePathProcessor extends LocalInspectionTool {
                                 || arg instanceof UReferenceExpression) {
                                 PsiAnnotation annotation = findResourcePathAnnotation(node);
                                 if (annotation == null || !validateBaseFolder(holder, annotation)) continue;
+                                if (arg.getSourcePsi() == null) continue;
 
                                 for (String value : evaluateExpressions(arg)) {
-                                    if (value == null || resourceExists(resolveFullPath(annotation, value), holder.getProject(), false)) continue;
-                                    if (arg.getSourcePsi() == null) continue;
-                                    holder.registerProblem(arg.getSourcePsi(), "Missing Resource File: " + resolveFullPath(annotation, value), getHighlightType(holder));
+                                    if (value == null || value.isEmpty()) continue;
+                                    String resourcePath = resolveFullPath(annotation, value);
+                                    if (resourceExists(resourcePath, holder.getProject(), false)) continue;
+                                    holder.registerProblem(arg.getSourcePsi(), "Missing Resource File: " + resourcePath, getHighlightType(holder));
                                 }
                             }
                         }
@@ -103,8 +105,10 @@ class ResourcePathProcessor extends LocalInspectionTool {
                     if (expr == null) return;
 
                     for (String value : evaluateExpressions(expr)) {
-                        if (value != null && !resourceExists(resolveFullPath(annotation, value), holder.getProject(), false))
-                            holder.registerProblem(field.getInitializer(), "Missing Resource File: " + resolveFullPath(annotation, value), getHighlightType(holder));
+                        if (value == null || value.isEmpty()) continue;
+                        String resourcePath = resolveFullPath(annotation, value);
+                        if (resourceExists(resourcePath, holder.getProject(), false)) continue;
+                        holder.registerProblem(field.getInitializer(), "Missing Resource File: " + resourcePath, getHighlightType(holder));
                     }
                 });
             }
@@ -127,8 +131,10 @@ class ResourcePathProcessor extends LocalInspectionTool {
                             if (argU == null) return;
 
                             for (String value : evaluateExpressions(argU)) {
-                                if (value != null && !resourceExists(resolveFullPath(annotation, value), holder.getProject(), false))
-                                    holder.registerProblem(arg, "Missing Resource File: " + resolveFullPath(annotation, value), getHighlightType(holder));
+                                if (value == null || value.isEmpty()) continue;
+                                String resourcePath = resolveFullPath(annotation, value);
+                                if (resourceExists(resourcePath, holder.getProject(), false)) continue;
+                                holder.registerProblem(arg, "Missing Resource File: " + resourcePath, getHighlightType(holder));
                             }
                         });
                 }
