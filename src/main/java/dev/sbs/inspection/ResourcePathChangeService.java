@@ -79,13 +79,11 @@ final class ResourcePathChangeService {
                 PsiField enclosingField = PsiTreeUtil.getParentOfType(literal, PsiField.class);
 
                 if (enclosingField != null && hasResourcePathAnnotation(enclosingField.getModifierList())) {
-                    System.out.println("Adding file for: " + enclosingField);
                     filesToRestart.add(file);
                     return;
                 }
 
                 if (enclosingMethod != null && hasResourcePathAnnotation(enclosingMethod.getModifierList())) {
-                    System.out.println("Adding file for: " + enclosingMethod);
                     filesToRestart.add(file);
                     return;
                 }
