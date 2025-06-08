@@ -59,8 +59,14 @@ public class StringExpressionEvaluator {
                     result.addAll(evaluate(initExpr, visitedMethods, intermediateVars));
             }
         } else if (expression instanceof UCallExpression callExpr) { // Method Calls
-            PsiMethod method = callExpr.resolve();
+            // Try to resolve constant string folding before digging deeper
+            String folded = resolveFoldedStringChain(callExpr);
+            if (folded != null) {
+                result.add(folded);
+                return result;
+            }
 
+            PsiMethod method = callExpr.resolve();
             if (method != null && !visitedMethods.contains(method)) {
                 visitedMethods.add(method);
                 PsiCodeBlock body = method.getBody();
@@ -178,16 +184,15 @@ public class StringExpressionEvaluator {
         else if (expr instanceof UCallExpression call) {
             String base = resolveFoldedStringChain(call.getReceiver());
             if (base == null) return null;
-            return foldStringMethod(base, call);
+            return foldString(base, call);
         }
 
         return null;
     }
 
-    private static @Nullable String foldStringMethod(@NotNull String base, @NotNull UCallExpression call) {
+    private static @Nullable String foldString(@NotNull String base, @NotNull UCallExpression call) {
         String methodName = call.getMethodName();
         if (methodName == null) return null;
-
         List<UExpression> args = call.getValueArguments();
 
         try {
