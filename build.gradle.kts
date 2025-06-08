@@ -25,6 +25,11 @@ dependencies {
         // Add necessary plugin dependencies for compilation here, example:
         bundledPlugin("com.intellij.java")
     }
+
+    // Tests
+    testImplementation(group = "org.hamcrest", name = "hamcrest", version = "2.2")
+    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "5.9.2")
+    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "5.9.2")
 }
 
 intellijPlatform {
@@ -68,7 +73,7 @@ tasks {
         dependsOn("generatePomFileForMavenJavaPublication")
         val generatedPom = layout.buildDirectory.file("publications/mavenJava/pom-default.xml")
         from(generatedPom)
-        into(layout.buildDirectory.dir("generated-resources/META-INF"))
+        into(layout.buildDirectory.dir("generated-resources"))
         rename { "pom.xml" }
     }
     val sourcesJar by register<Jar>("sourcesJar") {
@@ -99,7 +104,7 @@ tasks {
 
 sourceSets {
     main {
-        java.srcDirs("src/main/kotlin")
+        java.srcDirs("src/main/java")
         resources.srcDirs("src/main/resources", layout.buildDirectory.dir("generated-resources"))
     }
 }
