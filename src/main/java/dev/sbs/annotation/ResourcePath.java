@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
  * </code></pre>
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
 public @interface ResourcePath {
 
     /**
