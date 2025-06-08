@@ -2,7 +2,6 @@ package dev.sbs.util;
 
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.*;
 
 import java.util.HashMap;
@@ -59,14 +58,8 @@ public class StringExpressionEvaluator {
                     result.addAll(evaluate(initExpr, visitedMethods, intermediateVars));
             }
         } else if (expression instanceof UCallExpression callExpr) { // Method Calls
-            // Try to resolve constant string folding before digging deeper
-            String folded = resolveFoldedStringChain(callExpr);
-            if (folded != null) {
-                result.add(folded);
-                return result;
-            }
-
             PsiMethod method = callExpr.resolve();
+
             if (method != null && !visitedMethods.contains(method)) {
                 visitedMethods.add(method);
                 PsiCodeBlock body = method.getBody();
@@ -173,64 +166,6 @@ public class StringExpressionEvaluator {
                 visitedMethods,
                 intermediateVars
             );
-        }
-    }
-
-    private static @Nullable String resolveFoldedStringChain(@Nullable UExpression expr) {
-        if (expr == null) return null;
-
-        if (expr instanceof ULiteralExpression literal && literal.getValue() instanceof String base)
-            return base;
-        else if (expr instanceof UCallExpression call) {
-            String base = resolveFoldedStringChain(call.getReceiver());
-            if (base == null) return null;
-            return foldString(base, call);
-        }
-
-        return null;
-    }
-
-    private static @Nullable String foldString(@NotNull String base, @NotNull UCallExpression call) {
-        String methodName = call.getMethodName();
-        if (methodName == null) return null;
-        List<UExpression> args = call.getValueArguments();
-
-        try {
-            return switch (methodName) {
-                case "toUpperCase" -> base.toUpperCase();
-                case "toLowerCase" -> base.toLowerCase();
-                case "trim" -> base.trim();
-                case "substring" -> {
-                    if (args.size() == 1) {
-                        Object eval = args.get(0).evaluate();
-                        if (eval == null) yield null;
-                        int begin = Integer.parseInt(eval.toString());
-                        yield base.substring(begin);
-                    } else if (args.size() == 2) {
-                        Object eval0 = args.get(0).evaluate();
-                        if (eval0 == null) yield null;
-                        Object eval1 = args.get(0).evaluate();
-                        if (eval1 == null) yield null;
-                        int begin = Integer.parseInt(eval0.toString());
-                        int end = Integer.parseInt(eval1.toString());
-                        yield base.substring(begin, end);
-                    } else yield null;
-                }
-                case "replace" -> {
-                    if (args.size() == 2) {
-                        Object eval0 = args.get(0).evaluate();
-                        if (eval0 == null) yield null;
-                        Object eval1 = args.get(0).evaluate();
-                        if (eval1 == null) yield null;
-                        String target = eval0.toString();
-                        String replacement = eval1.toString();
-                        yield base.replace(target, replacement);
-                    } else yield null;
-                }
-                default -> null;
-            };
-        } catch (Exception e) {
-            return null;
         }
     }
 
