@@ -14,17 +14,18 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
     <ul>
-        <li><b>Handles UAST traversal</b> via AbstractUastVisitor to analyze method call arguments.<li>
+        <li><b>Handles UAST traversal</b> via AbstractUastVisitor to analyze method call arguments.</li>
         <li><b>Supports string resolution</b> from:
-        <ul>
-            <li>Direct literals (ULiteralExpression)</li>
-            <li>Binary concatenation (UPolyadicExpression)</li>
-            <li>Final/static/enum fields (PsiField)</li>
-            <li>Local variables (PsiLocalVariable)</li>
-            <li>Method calls (UCallExpression, Recursive)</li>
-            <li>Method bodies (PsiDeclarationStatement)</li>
-            <li>UAST local variables (UDeclarationsExpression)</li>
-        </ul>
+            <ul>
+                <li>Direct literals (ULiteralExpression)</li>
+                <li>Binary concatenation (UPolyadicExpression)</li>
+                <li>Final/static/enum fields (PsiField)</li>
+                <li>Local variables (PsiLocalVariable)</li>
+                <li>Method calls (UCallExpression, Recursive)</li>
+                <li>Method bodies (PsiDeclarationStatement)</li>
+                <li>UAST local variables (UDeclarationsExpression)</li>
+            </ul>
+        </li>
         <li><b>Validates paths</b> by combining the annotation's base directory with the provided path and checking for existence in Source roots</li>
     </ul>
   ]]></description>
@@ -40,11 +41,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <localInspection
                 language="JAVA"
-                implementationClass="dev.sbs.inspection.ResourcePathInspection"
+                implementationClass="dev.sbs.annotation.inspection.ResourcePathInspection"
                 shortName="ResourcePathInspection"
                 displayName="Resource Path"
                 groupName="Simplified Annotations"
         />
-        <postStartupActivity implementation="dev.sbs.inspection.ResourcePathStartupActivity"/>
+        <postStartupActivity implementation="dev.sbs.annotation.inspection.ResourcePathStartupActivity"/>
     </extensions>
 </idea-plugin>
