@@ -168,6 +168,8 @@ tasks {
     }
 }
 
+// https://central.sonatype.com/publishing
+// https://plugins.jetbrains.com/plugin/27678-simplified-annotations
 publishing {
     publications {
         create<MavenPublication>("release") {
