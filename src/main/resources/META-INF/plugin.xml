@@ -17,11 +17,13 @@
         <li><b>Handles UAST traversal</b> via AbstractUastVisitor to analyze method call arguments.<li>
         <li><b>Supports string resolution</b> from:
         <ul>
-            <li>String literals</li>
-            <li>Binary concatenation (e.g., "a" + "b")</li>
-            <li>Constants and field initializers</li>
-            <li>Simple methods with direct String return values</li>
-            <li>Enum constants and their constructor parameters</li>
+            <li>Direct literals (ULiteralExpression)</li>
+            <li>Binary concatenation (UPolyadicExpression)</li>
+            <li>Final/static/enum fields (PsiField)</li>
+            <li>Local variables (PsiLocalVariable)</li>
+            <li>Method calls (UCallExpression, Recursive)</li>
+            <li>Method bodies (PsiDeclarationStatement)</li>
+            <li>UAST local variables (UDeclarationsExpression)</li>
         </ul>
         <li><b>Validates paths</b> by combining the annotation's base directory with the provided path and checking for existence in Source roots</li>
     </ul>

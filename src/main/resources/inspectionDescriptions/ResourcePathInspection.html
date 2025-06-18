@@ -6,11 +6,13 @@
 </p>
 <h3>Supported String Resolution</h3>
 <ul>
-    <li>String literals</li>
-    <li>Binary concatenation (e.g., "a" + "b")</li>
-    <li>Constants and field initializers</li>
-    <li>Simple methods with direct String return values</li>
-    <li>Enum constants and their constructor parameters</li>
+    <li>Direct literals (ULiteralExpression)</li>
+    <li>Binary concatenation (UPolyadicExpression)</li>
+    <li>Final/static/enum fields (PsiField)</li>
+    <li>Local variables (PsiLocalVariable)</li>
+    <li>Method calls (UCallExpression, Recursive)</li>
+    <li>Method bodies (PsiDeclarationStatement)</li>
+    <li>UAST local variables (UDeclarationsExpression)</li>
 </ul>
 <h3>Code Example</h3>
 <pre><code>    // Class Field
@@ -18,22 +20,28 @@
     private String configFile = "config/settings.xml";
 
     // Class Field (with base)
-    &#64;ResourcePath(base = "images")
-    private String iconFile = "icon.png"; // images/icon.png
+    &#64;ResourcePath(base = "config")
+    private String iconFile = "settings.xml";
+
+    // Method Return (with base)
+    &#64;ResourcePath(base = "config")
+    public void loadResource(String fileName) {
+        return fileName;
+    }
 
     // Method Parameter (with base)
-    public void loadResource(&#64;ResourcePath(base = "templates") String fileName) {
+    public void loadResource(&#64;ResourcePath(base = "config") String fileName) {
         // implementation
     }
 
     // Enum Constructor
-    public enum Status {
-        OK("logo.png"); // assets/logo.png
+    public enum Files {
+        SETTINGS("settings.xml"); // assets/logo.png
 
-        private final String iconPath;
+        private final String path;
 
-        Status(&#64;ResourcePath(base = "assets") String iconPath) {
-            this.iconPath = iconPath;
+        Status(&#64;ResourcePath(base = "config") String path) {
+            this.path = (path.base() + "/" + path);
         }
     }
 </code></pre>
