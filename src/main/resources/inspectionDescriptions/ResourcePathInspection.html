@@ -21,11 +21,11 @@
 
     // Class Field (with base)
     &#64;ResourcePath(base = "config")
-    private String iconFile = "settings.xml";
+    private String configFileWithBase = "settings.xml";
 
     // Method Return (with base)
     &#64;ResourcePath(base = "config")
-    public void loadResource(String fileName) {
+    public String returnResource(String fileName) {
         return fileName;
     }
 
@@ -41,7 +41,7 @@
         private final String path;
 
         Status(&#64;ResourcePath(base = "config") String path) {
-            this.path = (path.base() + "/" + path);
+            this.path = "config/" + path;
         }
     }
 </code></pre>
