@@ -1,4 +1,4 @@
-package dev.sbs.annotation.inspection;
+package dev.sbs.inspection;
 
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.components.Service;

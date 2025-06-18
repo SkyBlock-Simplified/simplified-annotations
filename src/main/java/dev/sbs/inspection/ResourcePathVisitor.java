@@ -1,4 +1,4 @@
-package dev.sbs.annotation.inspection;
+package dev.sbs.inspection;
 
 import com.esotericsoftware.kryo.kryo5.util.Null;
 import com.intellij.codeInspection.LocalInspectionTool;

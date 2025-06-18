@@ -1,4 +1,4 @@
-package dev.sbs.annotation.inspection;
+package dev.sbs.inspection;
 
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;

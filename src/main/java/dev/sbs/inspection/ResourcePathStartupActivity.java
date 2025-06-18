@@ -1,4 +1,4 @@
-package dev.sbs.annotation.inspection;
+package dev.sbs.inspection;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.ProjectActivity;

@@ -1,5 +1,6 @@
-package dev.sbs.annotation;
+package dev.sbs;
 
+import dev.sbs.annotation.ResourcePath;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 

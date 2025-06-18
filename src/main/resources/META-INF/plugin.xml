@@ -41,11 +41,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <localInspection
                 language="JAVA"
-                implementationClass="dev.sbs.annotation.inspection.ResourcePathInspection"
+                implementationClass="dev.sbs.inspection.ResourcePathInspection"
                 shortName="ResourcePathInspection"
                 displayName="Resource Path"
                 groupName="Simplified Annotations"
         />
-        <postStartupActivity implementation="dev.sbs.annotation.inspection.ResourcePathStartupActivity"/>
+        <postStartupActivity implementation="dev.sbs.inspection.ResourcePathStartupActivity"/>
     </extensions>
 </idea-plugin>

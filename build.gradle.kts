@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.sbs"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -39,10 +39,12 @@ intellijPlatform {
         }
 
         changeNotes = """
-      Initial version
+      - Hide StringExpressionEvaluator from intellisense
+      - Move StringExpressionEvaluator into the inspection package
+      - Fix plugin.xml description
     """.trimIndent()
     }
-    //buildSearchableOptions = false
+    buildSearchableOptions = false
 }
 
 sourceSets {
