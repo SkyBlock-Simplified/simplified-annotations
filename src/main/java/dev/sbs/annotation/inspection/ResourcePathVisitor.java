@@ -1,4 +1,4 @@
-package dev.sbs.inspection;
+package dev.sbs.annotation.inspection;
 
 import com.esotericsoftware.kryo.kryo5.util.Null;
 import com.intellij.codeInspection.LocalInspectionTool;
@@ -16,7 +16,6 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
-import dev.sbs.util.StringExpressionEvaluator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UCallExpression;

@@ -1,4 +1,4 @@
-package dev.sbs.inspection;
+package dev.sbs.annotation.inspection;
 
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
