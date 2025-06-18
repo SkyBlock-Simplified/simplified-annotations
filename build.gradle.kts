@@ -70,9 +70,16 @@ fun File.writeChecksumFile(algorithm: String) {
     val checksumFile = File("${this.absolutePath}.$extension")
     checksumFile.writeText(checksum)
 }
+fun File.shouldSign(): Boolean {
+    val ascFile = File("${this.absolutePath}.asc")
+    return !ascFile.exists() || ascFile.lastModified() < this.lastModified()
+}
 
 // Publishing Directory
 val mavenPublishDir = layout.buildDirectory.dir("publications/release")
+val cleanMavenPublishDir by tasks.registering(Delete::class) {
+    delete(mavenPublishDir)
+}
 
 // Create Pom, Sources and Javadocs
 val javadocJar by tasks.registering(Jar::class) {
@@ -119,7 +126,10 @@ tasks {
                 .forEach { file ->
                     file.writeChecksumFile("SHA-1")
                     file.writeChecksumFile("MD5")
-                    exec { commandLine("gpg", "-ab", file.absolutePath) }
+
+                    if (file.shouldSign()) {
+                        exec { commandLine("gpg", "-ab", file.absolutePath) }
+                    }
                 }
         }
     }
@@ -150,6 +160,9 @@ tasks {
     processResources {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
+    named("jar") { dependsOn(cleanMavenPublishDir) }
+    sourcesJar { dependsOn(cleanMavenPublishDir) }
+    javadocJar { dependsOn(cleanMavenPublishDir) }
     register("publishAndPackage") {
         dependsOn("publishToMavenLocal", mavenZip)
     }
