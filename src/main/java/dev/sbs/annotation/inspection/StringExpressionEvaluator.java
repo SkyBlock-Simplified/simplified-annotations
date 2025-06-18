@@ -1,4 +1,4 @@
-package dev.sbs.util;
+package dev.sbs.annotation.inspection;
 
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class StringExpressionEvaluator {
+class StringExpressionEvaluator {
 
     public static @NotNull Set<String> evaluate(@NotNull UExpression expression) {
         return evaluate(expression, new HashSet<>(), new HashMap<>());//.values;
