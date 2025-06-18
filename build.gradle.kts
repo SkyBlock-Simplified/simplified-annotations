@@ -88,25 +88,6 @@ val sourcesJar by tasks.registering(Jar::class) {
     destinationDirectory.set(mavenPublishDir)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-val copyMavenMetadata by tasks.registering {
-    dependsOn("publishReleasePublicationToMavenLocal")
-    notCompatibleWithConfigurationCache("Accesses project files dynamically.")
-
-    doLast {
-        val localRepo = File(System.getProperty("user.home"), ".m2/repository")
-        val groupPath = project.group.toString().replace('.', '/')
-        val artifactId = project.name.lowercase()
-        val metadataFile = File(localRepo, "$groupPath/$artifactId/maven-metadata-local.xml")
-
-        if (metadataFile.exists()) {
-            val targetDir = mavenPublishDir.get().asFile.resolve("metadata")
-            targetDir.mkdirs()
-            metadataFile.copyTo(File(targetDir, "maven-metadata.xml"), overwrite = true)
-        } else {
-            logger.warn("maven-metadata-local.xml not found at: ${metadataFile.absolutePath}")
-        }
-    }
-}
 
 tasks {
     // Set the JVM compatibility versions
@@ -126,7 +107,7 @@ tasks {
 
     // Generate checksum and signed files for all files in generated-resources
     val checksumAndSigning by registering {
-        dependsOn(buildPlugin, sourcesJar, javadocJar, copyMavenMetadata)
+        dependsOn(buildPlugin, sourcesJar, javadocJar, "generatePomFileForReleasePublication")
         notCompatibleWithConfigurationCache("Accesses project files dynamically.")
 
         doLast {
@@ -157,19 +138,10 @@ tasks {
 
         from(mavenPublishDir) {
             include("**/*") // Includes JARs, pom.xml, and all checksum files
+            exclude("metadata")
             rename("pom-default.xml", "${artifactName}.pom")
             rename("${artifactName}-base.jar", "${artifactName}.jar")
-            eachFile {
-                if (file.isDirectory) {
-                    exclude()
-                }
-            }
             into("$groupPath/$artifactId/$version")
-        }
-
-        from(mavenPublishDir.map { it.dir("metadata") }) {
-            include("**/*")
-            into("$groupPath/$artifactId")
         }
     }
 
@@ -191,6 +163,7 @@ publishing {
             pom {
                 name.set("Simplified Annotations")
                 description.set("This plugin evaluates string expressions marked with the @ResourcePath annotation to check if resource files exist.")
+                url.set("https://github.com/SkyBlock-Simplified/" + project.name.lowercase())
                 artifactId = project.name.lowercase()
                 version = project.version.toString()
 
