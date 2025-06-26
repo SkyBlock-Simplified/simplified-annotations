@@ -1,5 +1,6 @@
 package dev.sbs.inspection;
 
+import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -26,24 +27,6 @@ class ResourcePathInspection extends LocalInspectionTool {
 
     @OptionTag("HIGHLIGHT_TYPE_BASE")
     public @NotNull ProblemHighlightType baseHighlightType = ProblemHighlightType.ERROR;
-
-    @Override
-    public @NotNull OptPane getOptionsPane() {
-        return OptPane.pane(
-            OptPane.group(
-                "Highlight settings",
-                OptPane.dropdown(
-                    "baseHighlightType",
-                    "Highlight for invalid base directory",
-                    OptPane.option(ProblemHighlightType.ERROR, "Error"),
-                    OptPane.option(ProblemHighlightType.WARNING, "Warning"),
-                    OptPane.option(ProblemHighlightType.WEAK_WARNING, "Weak Warning"),
-                    OptPane.option(ProblemHighlightType.GENERIC_ERROR_OR_WARNING, "Server Problem"),
-                    OptPane.option(ProblemHighlightType.INFORMATION, "Information")
-                )
-            )
-        );
-    }
 
     @Override
     public @NotNull PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
@@ -75,6 +58,34 @@ class ResourcePathInspection extends LocalInspectionTool {
             }
 
         };
+    }
+
+    @Override
+    public boolean isEnabledByDefault() {
+        return true;
+    }
+
+    @Override
+    public @NotNull HighlightDisplayLevel getDefaultLevel() {
+        return HighlightDisplayLevel.ERROR;
+    }
+
+    @Override
+    public @NotNull OptPane getOptionsPane() {
+        return OptPane.pane(
+            OptPane.group(
+                "Highlight settings",
+                OptPane.dropdown(
+                    "baseHighlightType",
+                    "Highlight for invalid base directory",
+                    OptPane.option(ProblemHighlightType.ERROR, "Error"),
+                    OptPane.option(ProblemHighlightType.WARNING, "Warning"),
+                    OptPane.option(ProblemHighlightType.WEAK_WARNING, "Weak Warning"),
+                    OptPane.option(ProblemHighlightType.GENERIC_ERROR_OR_WARNING, "Server Problem"),
+                    OptPane.option(ProblemHighlightType.INFORMATION, "Information")
+                )
+            )
+        );
     }
 
 }

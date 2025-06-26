@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.sbs"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ intellijPlatform {
         }
 
         changeNotes = """
-      Fix IndexNotReadyException on IDE startup
+      Enable inspection by default and set default hightlight level
     """.trimIndent()
     }
     buildSearchableOptions = false
