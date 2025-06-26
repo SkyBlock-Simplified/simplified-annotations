@@ -42,7 +42,9 @@ class ResourcePathVisitor {
         this.baseHighlightType = baseHighlightType;
     }
 
-    public void inspectMethod(@NotNull UCallExpression callExpr) {
+    public void inspectMethod(@NotNull PsiMethodCallExpression methodCallExpr) {
+        UCallExpression callExpr = UastContextKt.toUElement(methodCallExpr, UCallExpression.class);
+        if (callExpr == null) return;
         PsiMethod method = callExpr.resolve();
         if (method == null) return;
         PsiParameter[] parameters = method.getParameterList().getParameters();

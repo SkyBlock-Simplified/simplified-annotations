@@ -12,8 +12,6 @@ import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.PsiMethodCallExpression;
 import com.intellij.util.xmlb.annotations.OptionTag;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.uast.UCallExpression;
-import org.jetbrains.uast.UastContextKt;
 
 /**
  * Inspection processor that checks string literals annotated with {@code ResourcePath}
@@ -50,10 +48,7 @@ class ResourcePathInspection extends LocalInspectionTool {
 
             @Override
             public void visitMethodCallExpression(@NotNull PsiMethodCallExpression expression) {
-                UCallExpression uCall = UastContextKt.toUElement(expression, UCallExpression.class);
-
-                if (uCall != null)
-                    resourcePathVisitor.inspectMethod(uCall);
+                resourcePathVisitor.inspectMethod(expression);
             }
 
         };
