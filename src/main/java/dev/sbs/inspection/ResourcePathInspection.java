@@ -1,6 +1,5 @@
 package dev.sbs.inspection;
 
-import com.intellij.codeHighlighting.HighlightDisplayLevel;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
@@ -58,16 +57,6 @@ class ResourcePathInspection extends LocalInspectionTool {
             }
 
         };
-    }
-
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
-
-    @Override
-    public @NotNull HighlightDisplayLevel getDefaultLevel() {
-        return HighlightDisplayLevel.ERROR;
     }
 
     @Override

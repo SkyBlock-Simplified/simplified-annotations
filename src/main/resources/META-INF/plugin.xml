@@ -42,6 +42,8 @@
         <localInspection
                 language="JAVA"
                 implementationClass="dev.sbs.inspection.ResourcePathInspection"
+                enabledByDefault="true"
+                level="ERROR"
                 shortName="ResourcePathInspection"
                 displayName="Resource Path"
                 groupName="Simplified Annotations"
