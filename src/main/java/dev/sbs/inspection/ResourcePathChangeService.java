@@ -2,6 +2,7 @@ package dev.sbs.inspection;
 
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
 import com.intellij.openapi.components.Service;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -63,6 +64,7 @@ final class ResourcePathChangeService {
 
             private boolean hasResourcePathAnnotation(@Nullable PsiModifierList modifierList) {
                 if (modifierList == null) return false;
+
                 return Arrays.stream(modifierList.getAnnotations())
                     .anyMatch(anno -> annotationPath.equals(anno.getQualifiedName()));
             }
@@ -70,6 +72,7 @@ final class ResourcePathChangeService {
             private void collectAffectedFile(@Nullable PsiElement element) {
                 if (!(element instanceof PsiLiteralExpression literal)) return;
                 if (!(literal.getValue() instanceof String)) return;
+                if (DumbService.isDumb(project)) return;
 
                 PsiFile file = literal.getContainingFile();
                 if (file == null) return;

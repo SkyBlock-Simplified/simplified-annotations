@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.sbs"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,7 @@ intellijPlatform {
         }
 
         changeNotes = """
-      - Hide StringExpressionEvaluator from intellisense
-      - Move StringExpressionEvaluator into the inspection package
-      - Fix plugin.xml description
+      Fix IndexNotReadyException on IDE startup
     """.trimIndent()
     }
     buildSearchableOptions = false
