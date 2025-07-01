@@ -53,6 +53,8 @@ final class ResourcePathChangeService {
             public void childrenChanged(@NotNull PsiTreeChangeEvent event) {
                 PsiElement parent = event.getParent();
                 if (parent == null || !parent.isValid()) return;
+                if (DumbService.isDumb(project)) return;
+                // ApplicationManager.getApplication().invokeLater
 
                 // Find all string literals in the changed subtree
                 Collection<PsiLiteralExpression> literals = PsiTreeUtil.findChildrenOfType(parent, PsiLiteralExpression.class);

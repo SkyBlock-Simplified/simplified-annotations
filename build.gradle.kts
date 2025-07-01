@@ -39,7 +39,7 @@ intellijPlatform {
         }
 
         changeNotes = """
-      Enable inspection by default and set default hightlight level
+      Enable inspection by default, set default highlight level, do not scan files during indexing
     """.trimIndent()
     }
     buildSearchableOptions = false

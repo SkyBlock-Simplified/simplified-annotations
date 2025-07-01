@@ -4,6 +4,7 @@ import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.codeInspection.options.OptPane;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.psi.JavaElementVisitor;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiEnumConstant;
@@ -27,6 +28,7 @@ class ResourcePathInspection extends LocalInspectionTool {
 
     @Override
     public @NotNull PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
+        if (DumbService.isDumb(holder.getProject())) return PsiElementVisitor.EMPTY_VISITOR;
         ResourcePathVisitor resourcePathVisitor = new ResourcePathVisitor(this, holder, this.baseHighlightType);
 
         return new JavaElementVisitor() {
