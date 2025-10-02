@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.sbs"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ intellijPlatform {
         }
 
         changeNotes = """
-      Enable inspection by default, set default highlight level, do not scan files during indexing
+      Fix heavy lag in 800+ line files
     """.trimIndent()
     }
     buildSearchableOptions = false
